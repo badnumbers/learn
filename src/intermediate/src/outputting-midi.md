@@ -25,7 +25,7 @@ MIDI Destinations:
 	MIDIEndPoint("SuperCollider", "in1")
 ```
 
-I want to sound MIDI data out through my Scarlett audio interface, so I create a `MIDIClient` corresponding to one of those devices by copying and pasting the appropriate device names into a call to `MIDIOut.newByName()`:
+I want to sound MIDI data out through my Scarlett audio interface, so I create a `MIDIOut` corresponding to one of those devices by copying and pasting the appropriate device names into a call to `MIDIOut.newByName()`:
 
 ```
 ~midiOut = MIDIOut.newByName("Scarlett 6i6 USB", "Scarlett 6i6 USB MIDI 1");
@@ -45,7 +45,7 @@ Or later if you prefer:
 
 You may occasionally find you need to tweak the latency value of your `MIDIOut` in order to get it to exactly match synths in SuperCollider. You can set the value at any time, including when a pattern is playing MIDI data.
 
-## Sending data from the port
+## Sending data from the `MIDIOut`
 
 The class can be used in two different ways:
 1. Calling methods on `MIDIOut` directly. This is a more direct approach.
@@ -55,11 +55,11 @@ We will initially examine the second way of working with `MIDIOut`, since it is 
 
 ### Sending MIDI data by using patterns
 
-Using patterns to control MIDI data is almost identical to using patterns to control SuperCollider `SynthDef`s. The event type you need to use is `\midi`. A pattern which sends MIDI data uses some special keys:
+Using patterns to control MIDI data is almost identical to using patterns to control SuperCollider SynthDefs. The event type you need to use is `\midi`. A pattern which sends MIDI data uses some special keys:
 
-`\midiout`: The `MIDIOut` instance you want to send MIDI data through (see above).
-`\midicmd`: The type of MIDI message you want to send; in this case `\noteOn`.
-`\chan`: The MIDI channel number. SuperCollider thinks of these as 0-based, so the MIDI channel numbers in your patterns should be between 0 (for MIDI channel 1) and 15 (for MIDI channel 16).
+* `\midiout`: The `MIDIOut` instance you want to send MIDI data through (see above).
+* `\midicmd`: The type of MIDI message you want to send; in this case `\noteOn`.
+* `\chan`: The MIDI channel number. SuperCollider thinks of these as 0-based, so the MIDI channel numbers in your patterns should be between 0 (for MIDI channel 1) and 15 (for MIDI channel 16).
 
 Here is an example:
 
@@ -81,7 +81,7 @@ Pdef(\myPattern,
 )
 ```
 
-As well as specifying MIDI note numbers directly using the key `\midinote`, you can also use `\note` or `\degree` and these will be converted to MIDI note numbers in the same way that they would be converted to frequency values in a pattern written to play a `SynthDef`. And of course, `\degree` can be used in conjunction with `\scale`, although due to the nature of MIDI itself, only the  [12-TET[(https://en.wikipedia.org/wiki/Equal_temperament#12TET) tuning is supported.
+As well as specifying MIDI note numbers directly using the key `\midinote`, you can also use `\note` or `\degree` and these will be converted to MIDI note numbers in the same way that they would be converted to frequency values in a pattern written to play a `SynthDef`. And of course, `\degree` can be used in conjunction with `\scale`, although due to the nature of MIDI itself, only the  [12-TET](https://en.wikipedia.org/wiki/Equal_temperament#12TET) tuning is supported.
 
 The `\amp` key is converted to a note on velocity of between 0 and 127.
 
@@ -109,7 +109,7 @@ Pdef(\playChord,
 
 The following MIDI commands are also supported:
 
-`\noteOff`
+##### `\noteOff`
 Used to send MIDI note off messages when you previously sent note on messages with the key `\hasGate` equal to `false`.
 
 ```
@@ -128,7 +128,7 @@ Pdef(\stopChord,
 ```
 The `noteOff` MIDI command also supports the `\amp` key, which will be converted to release velocity (a feature supported by some synthesizers).
 
-`allNotesOff`
+##### `\allNotesOff`
 
 ```
 (
