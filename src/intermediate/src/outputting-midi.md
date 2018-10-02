@@ -91,7 +91,7 @@ This behaviour is usually what you want. If however you wish to send only MIDI n
 
 ```
 (
-Pdef(\arpegChord,
+Pdef(\playChord,
 	Pbind(
 		\type,\midi,
 		\midiout,~midiOut,
@@ -107,4 +107,39 @@ Pdef(\arpegChord,
 
 #### Other MIDI commands
 
-The following MIDI commands are also supported.
+The following MIDI commands are also supported:
+
+`\noteOff`
+Used to send MIDI note off messages when you previously sent note on messages with the key `\hasGate` equal to `false`.
+
+```
+(
+Pdef(\stopChord,
+	Pbind(
+		\type,\midi,
+		\midiout,~midiOut,
+		\midicmd,\noteOff,
+		\chan,0,
+		\degree, Pseq([0,2,4],1),
+		\octave, 4
+	)
+).play;
+)
+```
+The `noteOff` MIDI command also supports the `\amp` key, which will be converted to release velocity (a feature supported by some synthesizers).
+
+`allNotesOff`
+
+```
+(
+Pdef(\stopAllNotes,
+	Pbind(
+		\type,\midi,
+		\midiout,~midiOut,
+		\midicmd,\allNotesOff,
+		\chan,Pseq([0],1)
+	)
+).play;
+)
+```
+This turns off all notes for the MIDI channel in case some of them are stuck. Note that above I have wrapped the value for the `\chan` key in a `Pseq` with 1 repeat. This is because otherwise the pattern will send 'all note off' events continually until stopped, which may cause some confusion!
