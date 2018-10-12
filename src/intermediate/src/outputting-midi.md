@@ -58,7 +58,7 @@ We will initially examine the second way of working with `MIDIOut`, since it is 
 Using patterns to control MIDI data is almost identical to using patterns to control SuperCollider SynthDefs. The event type you need to use is `\midi`. A pattern which sends MIDI data uses some special keys:
 
 * `\midiout`: The `MIDIOut` instance you want to send MIDI data through (see above).
-* `\midicmd`: The type of MIDI message you want to send; in this case `\noteOn`.
+* `\midicmd`: The type of MIDI message you want to send. The default is `\noteOn`.
 * `\chan`: The MIDI channel number. SuperCollider thinks of these as 0-based, so the MIDI channel numbers in your patterns should be between 0 (for MIDI channel 1) and 15 (for MIDI channel 16).
 
 Here is an example:
@@ -81,7 +81,7 @@ Pdef(\myPattern,
 )
 ```
 
-As well as specifying MIDI note numbers directly using the key `\midinote`, you can also use `\note` or `\degree` and these will be converted to MIDI note numbers in the same way that they would be converted to frequency values in a pattern written to play a `SynthDef`. And of course, `\degree` can be used in conjunction with `\scale`, although due to the nature of MIDI itself, only the  [12-TET](https://en.wikipedia.org/wiki/Equal_temperament#12TET) tuning is supported.
+As well as specifying MIDI note numbers directly using the key `\midinote`, you can also use `\note` or `\degree` and these will be converted to MIDI note numbers in the same way that they would be converted to frequency values in a pattern written to play a SynthDef. And of course, `\degree` can be used in conjunction with `\scale`, although due to the nature of MIDI itself, only the  [12-TET](https://en.wikipedia.org/wiki/Equal_temperament#12TET) tuning is supported.
 
 The `\amp` key is converted to a note on velocity of between 0 and 127.
 
@@ -126,7 +126,7 @@ Pdef(\stopChord,
 ).play;
 )
 ```
-The `noteOff` MIDI command also supports the `\amp` key, which will be converted to release velocity (a feature supported by some synthesizers).
+The `noteOff` MIDI command also supports the `\amp` key, which will be converted to [release velocity](http://electronicmusic.wikia.com/wiki/Release_velocity).
 
 ##### `\allNotesOff`
 
